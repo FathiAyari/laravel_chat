@@ -29,7 +29,7 @@ class SocialPage extends StatelessWidget {
             DelayedAnimation(
               delay: 1500,
               child: Container(
-                height: 280,
+                height: 200,
                 child: Image.asset('assets/auth.png'),
               ),
             ),
@@ -72,6 +72,9 @@ class SocialPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
+
+
+
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {

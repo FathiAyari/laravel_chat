@@ -1,5 +1,7 @@
-import 'package:auth/services/google/sing_up_google.dart';
+import 'package:auth/services/google/google_auth_services.dart';
+import 'package:auth/view/home_screen/welcome_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 const d_red = const Color(0xFF00695C);
 const primaryColor = Color(0xFF00695C);
@@ -16,37 +18,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: primaryColor,
       ),
-      home: test(),
+      home: WelcomePage(),
     );
   }
 }
 
-class test extends StatelessWidget {
-  const test({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            SignUpWithGoogle();
-            /*try {
-              final result = await FacebookAuth.i.login(permissions: ["public_profile", "email"]);
-              if (result.status == LoginStatus.success) {
-                final requestData = await FacebookAuth.i.getUserData(fields: "name,email,picture");
-                print(requestData);
-              }
-            } catch (e) {
-              print(e.toString());
-            }*/
-          },
-          child: Text("test"),
-        ),
-      ),
-    );
-  }
-}

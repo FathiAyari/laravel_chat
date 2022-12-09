@@ -4,10 +4,10 @@ import 'package:http/http.dart' as http;
 
 
 class CallApi {
-  String baseURL = "http://192.168.154.86:8000/api/";
+ static String baseURL = "http://192.168.154.181:8080/api/";
 
-postData(data, apiUrl) async {
-    var fullUrl = baseURL + apiUrl + await _getToken();
+ postData(data, apiUrl) async {
+    var fullUrl = baseURL + apiUrl;
     return await http.post(Uri.parse(fullUrl), body: jsonEncode(data), headers: _setHeaders());
   }
 
@@ -31,7 +31,7 @@ postData(data, apiUrl) async {
     'Accept': 'application/json',
     "Connection": "Keep-Alive",
   };
-  _getToken() async {
+ static _getToken() async {
 /*    SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
     return '?token=$token';*/

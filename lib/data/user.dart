@@ -2,23 +2,30 @@ class User {
   final int? id;
   final String? name;
 
-  final String? photoUrl;
+  final String? avatar;
   final String? email;
 
-  User({this.name, this.photoUrl, this.email, this.id});
+  User({this.name, this.avatar, this.email, this.id});
 
   factory User.fromJson(Map<String, dynamic> json) {
     if (json['displayName'] != null) {
       return User(
         name: json['displayName'].toString(),
         email: json['email'].toString(),
-        photoUrl: json['photoUrl'],
+        avatar: json['photoUrl'],
+      );
+    }
+    else if ( json['name']!=null){
+      return User(
+        name: json['name'].toString(),
+        email: json['email'].toString(),
+        avatar: json['picture']['data']['url'],
       );
     }
     return User(
-      name: json['firstname'].toString(),
+      name: json['name'].toString(),
       email: json['email'].toString(),
-      photoUrl: json['picture']['data']['url'],
+      avatar: json['avatar'],
     );
   }
 
@@ -26,6 +33,6 @@ class User {
         "id": id,
         "name": name,
         "email": email,
-        "photoUrl": photoUrl,
+        "avatar": avatar,
       };
 }

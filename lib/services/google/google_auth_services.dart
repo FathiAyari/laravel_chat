@@ -3,8 +3,9 @@ import 'package:auth/data/user.dart';
 import 'GoogleSignInApi.dart';
 
 class GoogleAuthServices {
-  static Future<User> SignInWithGoogle() async {
+   Future<User> getDataFromGoogle() async {
     try {
+      SignOutGoogle();
       final data = await GoogleSignInApi.login();
 
       return User.fromJson({

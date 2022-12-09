@@ -2,7 +2,7 @@ import 'package:auth/data/user.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class FaceBookApis {
-  static Future<User> signInWithFacebook() async {
+  static Future<User> getDataFromFacebook() async {
     try {
       final result = await FacebookAuth.i.login(permissions: ["public_profile", "email"]);
       if (result.status == LoginStatus.success) {

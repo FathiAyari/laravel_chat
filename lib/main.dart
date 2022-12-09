@@ -1,5 +1,5 @@
 import 'package:auth/services/google/google_auth_services.dart';
-import 'package:auth/view/home_screen/welcome_page.dart';
+import 'package:auth/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: primaryColor,
       ),
-      home: WelcomePage(),
+      home: SplashScreen(),
     );
   }
 }

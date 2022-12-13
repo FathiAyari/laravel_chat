@@ -10,9 +10,9 @@ class AuthServices {
   final storage = GetStorage();
 
   Future<bool> signUp(Map data) async {
-
-    http.Response response =await  CallApi().postData(data, 'signup');
+    http.Response response = await CallApi().postData(data, 'signup');
     if (response.statusCode == 200) {
+      storage.write("auth", 1);
       User user = User.fromJson(jsonDecode(response.body));
       storage.write('user', {
         'name': user.name,
@@ -24,13 +24,13 @@ class AuthServices {
       return false;
     }
   }
-  Future<bool> signIn(Map data) async {
 
-    http.Response response =await  CallApi().postData(data, 'signin');
+  Future<bool> signIn(Map data) async {
+    http.Response response = await CallApi().postData(data, 'signin');
 
     if (response.statusCode == 200) {
-
       User user = User.fromJson(jsonDecode(response.body));
+      storage.write("auth", 1);
       storage.write('user', {
         'name': user.name,
         'email': user.email,

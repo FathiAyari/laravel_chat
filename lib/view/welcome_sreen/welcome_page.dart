@@ -1,10 +1,12 @@
 import 'package:auth/delayed_animation.dart';
 import 'package:auth/main.dart';
-import 'package:auth/social_page.dart';
+import 'package:auth/view/authentication/signin/sign_in_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomePage extends StatelessWidget {
+  var storage = GetStorage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,10 +51,11 @@ class WelcomePage extends StatelessWidget {
                     style: ElevatedButton.styleFrom(primary: d_red, shape: StadiumBorder(), padding: EdgeInsets.all(13)),
                     child: Text('GET STARTED'),
                     onPressed: () {
+                      storage.write("seen", 1);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SocialPage(),
+                          builder: (context) => SignInScreen(),
                         ),
                       );
                     },

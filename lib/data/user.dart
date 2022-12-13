@@ -12,20 +12,19 @@ class User {
       return User(
         name: json['displayName'].toString(),
         email: json['email'].toString(),
-        avatar: json['photoUrl'],
+        avatar: json['photoUrl'] ?? "https://cdn-icons-png.flaticon.com/512/147/147142.png",
       );
-    }
-    else if ( json['name']!=null){
+    } else if (json['name'] != null) {
       return User(
         name: json['name'].toString(),
         email: json['email'].toString(),
-        avatar: json['picture']['data']['url'],
+        avatar: json['picture']['data']['url'] ?? "https://cdn-icons-png.flaticon.com/512/147/147142.png",
       );
     }
     return User(
       name: json['name'].toString(),
       email: json['email'].toString(),
-      avatar: json['avatar'],
+      avatar: json['avatar'] ?? "https://cdn-icons-png.flaticon.com/512/147/147142.png",
     );
   }
 

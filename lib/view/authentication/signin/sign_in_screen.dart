@@ -14,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../main.dart';
 import '../../../services/facebook/facebook_auth_services.dart';
 import '../../../services/google/google_auth_services.dart';
+import '../../chat/messages_screen.dart';
 import '../../components/alert_dialog.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -124,7 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   setState(() {
                                     loading = false;
                                   });
-                                  print(value);
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (contet) => MessagesScreen()));
                                 } else {
                                   setState(() {
                                     loading = false;
@@ -139,23 +140,18 @@ class _SignInScreenState extends State<SignInScreen> {
                                     action: SnackBarAction(
                                       label: 'Cancel',
                                       onPressed: () {
-                                        ScaffoldMessenger.of(context)
-                                            .hideCurrentMaterialBanner();
+                                        ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
                                       },
                                     ),
                                     content: Container(
                                       height: Constants.screenHeight * 0.03,
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                Constants.screenWidth * 0.015),
-                                        child:
-                                            Text("wrong cridentials try again"),
+                                        padding: EdgeInsets.symmetric(horizontal: Constants.screenWidth * 0.015),
+                                        child: Text("wrong cridentials try again"),
                                       ),
                                     ),
                                   );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
+                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                 }
                               });
                             }
@@ -182,10 +178,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                   "account_type": 3,
                                 }).then((value) {
                                   if (value) {
-                                    print("${value}here value 2");
                                     setState(() {
                                       loading = false;
                                     });
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (contet) => MessagesScreen()));
                                   } else {
                                     AuthServices().signUp({
                                       "name": value1.name,
@@ -193,8 +189,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                       "avatar": value1.avatar,
                                       "account_type": 3,
                                     }).then((value) {
-                                      print("${value}here value 3");
                                       if (value) {
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (contet) => MessagesScreen()));
                                         setState(() {
                                           loading = false;
                                         });
@@ -230,9 +226,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
                             onPressed: () {
-                              GoogleAuthServices()
-                                  .getDataFromGoogle()
-                                  .then((value1) {
+                              GoogleAuthServices().getDataFromGoogle().then((value1) {
                                 if (value1.name != null) {
                                   setState(() {
                                     loading = true;
@@ -243,7 +237,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     "account_type": 2,
                                   }).then((value) {
                                     if (value) {
-                                      print("${value}here value 2");
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (contet) => MessagesScreen()));
                                       setState(() {
                                         loading = false;
                                       });
@@ -254,7 +248,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         "avatar": value1.avatar,
                                         "account_type": 2,
                                       }).then((value) {
-                                        print("${value}here value 3");
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (contet) => MessagesScreen()));
                                         if (value) {
                                           setState(() {
                                             loading = false;
@@ -294,8 +288,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Spacer(),
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                               return SignUpScreen();
                             }));
                           },
@@ -313,9 +306,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   ? Container(
                       child: Center(
                         child: Container(
-                          decoration: BoxDecoration(
-                              color: primaryColor.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(20)),
+                          decoration:
+                              BoxDecoration(color: primaryColor.withOpacity(0.3), borderRadius: BorderRadius.circular(20)),
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: CircularProgressIndicator(),

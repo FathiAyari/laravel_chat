@@ -2,6 +2,8 @@
     package="com.example.auth">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
+       android:allowBackup="false"
+       android:fullBackupContent="false"
         android:label="auth"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

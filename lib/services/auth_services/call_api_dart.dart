@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-
 class CallApi {
- static String baseURL = "http://192.168.154.181:8080/api/";
+  static String baseURL = "http://192.168.154.86:8080/api/";
 
- postData(data, apiUrl) async {
+  postData(data, apiUrl) async {
     var fullUrl = baseURL + apiUrl;
     return await http.post(Uri.parse(fullUrl), body: jsonEncode(data), headers: _setHeaders());
   }
@@ -27,11 +26,11 @@ class CallApi {
   }
 
   _setHeaders() => {
-    'Content-type': 'application/json',
-    'Accept': 'application/json',
-    "Connection": "Keep-Alive",
-  };
- static _getToken() async {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Connection": "Keep-Alive",
+      };
+  static _getToken() async {
 /*    SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
     return '?token=$token';*/

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:auth/view/authentication/signin/sign_in_screen.dart';
-import 'package:auth/view/chat/messages_screen.dart';
 import 'package:auth/view/welcome_sreen/welcome_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../ressources/dimensions/dimensions.dart';
+import '../chat/messages_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

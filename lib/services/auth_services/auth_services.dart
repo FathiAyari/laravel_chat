@@ -31,6 +31,7 @@ class AuthServices {
     if (response.statusCode == 200) {
       User user = User.fromJson(jsonDecode(response.body));
       storage.write("auth", 1);
+      print(user.toJson());
       storage.write('user', {
         'name': user.name,
         'email': user.email,

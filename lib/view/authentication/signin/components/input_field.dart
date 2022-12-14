@@ -8,12 +8,13 @@ class InputField extends StatelessWidget {
 final String label;
 final Widget prefixWidget;
 final TextInputType textInputType;
-  const InputField({Key? key, required this.controller, required this.label, required this.prefixWidget, required this.textInputType}) : super(key: key);
+final Color? fillColor;
+  const InputField({Key? key, required this.controller, required this.label, required this.prefixWidget, required this.textInputType, this.fillColor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  Padding(
-      padding: EdgeInsets.symmetric(vertical: Constants.screenHeight * 0.001, horizontal: Constants.screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(vertical: Constants.screenHeight * 0.001),
       child: Container(
         height: Constants.screenHeight * 0.09,
         child: TextFormField(
@@ -46,7 +47,7 @@ final TextInputType textInputType;
             prefixIcon: prefixWidget,
             hintText: label,
             filled: true,
-            fillColor: Colors.white,
+            fillColor: fillColor==null?Colors.white:fillColor,
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(

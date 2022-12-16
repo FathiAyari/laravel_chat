@@ -14,7 +14,7 @@ class User {
         email: json['email'].toString(),
         avatar: json['photoUrl'] ?? "https://cdn-icons-png.flaticon.com/512/147/147142.png",
       );
-    } else if (json['firstname'] != null) {
+    } else if (json['picture'] != null) {
       return User(
         name: json['name'].toString(),
         email: json['email'].toString(),
@@ -22,6 +22,7 @@ class User {
       );
     }
     return User(
+      id: json['id'],
       name: json['name'].toString(),
       email: json['email'].toString(),
       avatar: json['avatar'] ?? "https://cdn-icons-png.flaticon.com/512/147/147142.png",

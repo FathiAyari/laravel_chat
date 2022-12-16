@@ -5,9 +5,7 @@ import '../../../../../ressources/colors/colors.dart';
 import '../../../../../ressources/dimensions/dimensions.dart';
 
 class MessageWidget extends StatefulWidget {
-  bool receieved;
-  int id;
-  MessageWidget({Key? key, required this.receieved, required this.id}) : super(key: key);
+  MessageWidget({Key? key}) : super(key: key);
 
   @override
   State<MessageWidget> createState() => _MessageWidgetState();
@@ -73,14 +71,6 @@ class _MessageWidgetState extends State<MessageWidget> {
                                   maxLines: 1,
                                   style:
                                       TextStyle(color: CustomColors.lightBlackColor.withOpacity(0.8), fontFamily: "RalewayBold"),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(right: Constants.screenWidth * 0.01),
-                                child: CircleAvatar(
-                                  radius: 10,
-                                  backgroundColor: Colors.red,
-                                  child: Text("1"),
                                 ),
                               ),
                             ],

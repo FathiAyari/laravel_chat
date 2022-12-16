@@ -190,10 +190,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                       "account_type": 3,
                                     }).then((value) {
                                       if (value) {
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (contet) => MessagesScreen()));
                                         setState(() {
                                           loading = false;
                                         });
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => MessagesScreen()));
                                       }
                                     });
                                   }
@@ -249,11 +249,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                         "account_type": 2,
                                       }).then((value) {
                                         Navigator.of(context).push(MaterialPageRoute(builder: (contet) => MessagesScreen()));
-                                        if (value) {
-                                          setState(() {
-                                            loading = false;
-                                          });
-                                        }
+                                        setState(() {
+                                          loading = false;
+                                        });
                                       });
                                     }
                                   });

@@ -165,7 +165,7 @@ class _MessengerState extends State<Messenger> {
                                             'text': "${messageController.text}",
                                             'destination': widget.user.id,
                                             'sender': currentUser['id'],
-                                            'time': DateTime.now(),'type':"text",
+                                            'time': DateTime.now(),'type':"text"
                                           }).then((value) {
                                             messageController.clear();
                                             updateStartTypeStatus(false);
@@ -221,6 +221,7 @@ class _MessengerState extends State<Messenger> {
                                       'sender': currentUser['id'],
                                       'time': DateTime.now(),
                                       'type':"image",
+
                                     }).then((value) {
                                     setState(() {
                                       startUpload=false;

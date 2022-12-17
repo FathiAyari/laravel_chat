@@ -3,7 +3,7 @@
 
     <string name="app_name">auth</string>
 
-    <string name="facebook_app_id">5565522396908238</string>
-    <string name="fb_login_protocol_scheme">fb5565522396908238</string>
-    <string name="facebook_client_token">0000b141b71809847aa39a4d039f6127</string>
+    <string name="facebook_app_id">5980520555374407</string>
+    <string name="fb_login_protocol_scheme">fb5980520555374407</string>
+    <string name="facebook_client_token">8106c3aaf2faee8739e28ae976602986</string>
 </resources>

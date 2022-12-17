@@ -6,6 +6,7 @@ import 'package:auth/view/chat/search_friends_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -36,26 +37,37 @@ class _MessageScreenState extends State<MessagesScreen> {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => SignInScreen()));
   }
+  delete(List<QueryDocumentSnapshot> listOfData,int sender,int destination) {
+    for (var item in listOfData) {
+      if ((item.get('sender') == sender &&
+          item.get('destination') == destination ||
+          (item.get('destination') == sender &&
+              item.get('sender') == destination))) {
+        item.reference.delete();
+      }
+    }
+  }
   Future<bool> avoidReturnButton() async {
     Alerts.alertDialog(
         context,
         "Are you sure you want to exit ?",
         "assets/logooo.png",
-            () {
+        () {
           exit(0);
         },
         "Yes",
-            () {
+        () {
           Navigator.pop(context);
         },
         "No");
     return true;
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-
-      onWillPop: avoidReturnButton,child: SafeArea(
+      onWillPop: avoidReturnButton,
+      child: SafeArea(
           child: Scaffold(
         body: Column(
           children: [
@@ -95,7 +107,8 @@ class _MessageScreenState extends State<MessagesScreen> {
                               borderRadius: BorderRadius.circular(50),
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => SearchFriendWidget()));
+                                    builder: (context) =>
+                                        SearchFriendWidget()));
                               },
                               splashColor: Colors.grey,
                               highlightColor: Colors.grey,
@@ -136,28 +149,36 @@ class _MessageScreenState extends State<MessagesScreen> {
                                         children: [
                                           Expanded(
                                             child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: ElevatedButton(
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                   },
                                                   child: Text("No"),
-                                                  style: ElevatedButton.styleFrom(
-                                                      primary: Colors.green
-                                                          .withOpacity(0.8))),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          primary: Colors
+                                                              .green
+                                                              .withOpacity(
+                                                                  0.8))),
                                             ),
                                           ),
                                           Expanded(
                                             child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: ElevatedButton(
                                                   onPressed: () {
                                                     logOut();
                                                   },
                                                   child: Text("Yes"),
-                                                  style: ElevatedButton.styleFrom(
-                                                      primary: Colors.red
-                                                          .withOpacity(0.8))),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          primary: Colors
+                                                              .red
+                                                              .withOpacity(
+                                                                  0.8))),
                                             ),
                                           ),
                                         ],
@@ -201,12 +222,13 @@ class _MessageScreenState extends State<MessagesScreen> {
                   .collection('messages')
                   .orderBy('time')
                   .snapshots(),
-              builder: (context, snapshot) {
+              builder: (context, snapshotsData) {
                 List msg = [];
 
-                if (snapshot.hasData) {
-                  if (snapshot.data!.size != 0) {
-                    final messages = snapshot.data!.docs.reversed;
+
+                if (snapshotsData.hasData) {
+                  if (snapshotsData.data!.size != 0) {
+                    final messages = snapshotsData.data!.docs.reversed;
                     for (var message in messages) {
                       final getText = message.get('text');
                       final getSender = message.get('sender');
@@ -215,8 +237,8 @@ class _MessageScreenState extends State<MessagesScreen> {
                       final getType = message.get('type');
                       final Map<String, dynamic> messageWidget = {
                         'getText': getText,
-                        'getTime': DateFormat('kk:mm')
-                            .format(DateTime.parse(getTime.toDate().toString())),
+                        'getTime': DateFormat('kk:mm').format(
+                            DateTime.parse(getTime.toDate().toString())),
                         'getSender': getSender,
                         'getDestination': getDestination,
                         'getType': getType,
@@ -251,107 +273,88 @@ class _MessageScreenState extends State<MessagesScreen> {
                       }
                     }
 
-                    if(msg.isNotEmpty){
+                    if (msg.isNotEmpty) {
                       return ListView.builder(
                         itemCount: msg.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey.withOpacity(0.2)),
-                            child: InkWell(
-                              onTap: () async {
-                                var destination = await FirebaseFirestore.instance
-                                    .collection("users")
-                                    .where(
-                                  "id",
-                                  isEqualTo: this.user['id'] ==
-                                      msg[index]["getDestination"]
-                                      ? msg[index]["getSender"]
-                                      : msg[index]["getDestination"],
-                                )
-                                    .get();
-                                var user = User.fromJson(destination.docs
-                                    .toList()
-                                    .first
-                                    .data() as Map<String, dynamic>);
+                          return Slidable(
+                            key: ValueKey(0),
 
+                            // The start action pane is the one at the left or the top side.
+                            startActionPane: ActionPane(
+                              // A motion is a widget used to control how the pane animates.
+                              motion: ScrollMotion(),
 
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                                  return Messenger(user: user,);
-                                }));
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 10),
-                                child: user['id'] == msg[index]["getSender"]
-                                    ? Row(
-                                  children: [
-                                    CircleAvatar(
-                                        radius: 33,
-                                        backgroundImage: NetworkImage(
-                                            "${user["avatar"]}")),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "You",
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    msg[index]["getType"]=="text"?  "${msg[index]["getText"]}":"you have sent  a photo",
-                                                    overflow:
-                                                    TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  child: Text(
-                                                      "${msg[index]["getTime"]}"),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                                    : StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance
-                                        .collection("users")
-                                        .where('id',
-                                        isEqualTo: msg[index]["getSender"])
-                                        .snapshots(),
-                                    builder: (BuildContext context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        return Row(
+                              children: [
+                                // A SlidableAction can have an icon and/or a label.
+                                SlidableAction(
+                                  onPressed: (context) {
+                                    delete(snapshotsData.data!.docs,msg[index]["getSender"],msg[index]["getDestination"]);
+                                  },
+                                  backgroundColor: Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Delete',
+                                ),
+                                SlidableAction(
+                                  onPressed: (context) {},
+                                  backgroundColor: Color(0xFF21B7CA),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.close,
+                                  label: 'Cancel',
+                                ),
+                              ],
+                            ),
+                            child: Container(
+                              height: 100,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.grey.withOpacity(0.2)),
+                              child: InkWell(
+                                onTap: () async {
+                                  var destination =
+                                      await FirebaseFirestore.instance
+                                          .collection("users")
+                                          .where(
+                                            "id",
+                                            isEqualTo: this.user['id'] ==
+                                                    msg[index]["getDestination"]
+                                                ? msg[index]["getSender"]
+                                                : msg[index]["getDestination"],
+                                          )
+                                          .get();
+                                  var user = User.fromJson(destination.docs
+                                      .toList()
+                                      .first
+                                      .data() as Map<String, dynamic>);
+
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) {
+                                    return Messenger(
+                                      user: user,
+                                    );
+                                  }));
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 10),
+                                  child: user['id'] == msg[index]["getSender"]
+                                      ? Row(
                                           children: [
                                             CircleAvatar(
                                                 radius: 33,
                                                 backgroundImage: NetworkImage(
-                                                    "${snapshot.data!.docs[0].get('avatar')}")),
+                                                    "${user["avatar"]}")),
                                             Expanded(
                                               child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Column(
                                                   children: [
                                                     Text(
-                                                      "${snapshot.data!.docs[0].get('name')}",
+                                                      "You",
                                                       style:
-                                                      GoogleFonts.poppins(
+                                                          GoogleFonts.poppins(
                                                         color: Colors.black,
                                                         fontSize: 16,
                                                       ),
@@ -360,11 +363,13 @@ class _MessageScreenState extends State<MessagesScreen> {
                                                       children: [
                                                         Expanded(
                                                           child: Text(
-                                                            msg[index]["getType"]=="text"?  "${msg[index]["getText"]}":"you have received  a photo",
-
+                                                            msg[index]["getType"] ==
+                                                                    "text"
+                                                                ? "${msg[index]["getText"]}"
+                                                                : "you have sent  a photo",
                                                             overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             maxLines: 1,
                                                           ),
                                                         ),
@@ -376,24 +381,87 @@ class _MessageScreenState extends State<MessagesScreen> {
                                                     )
                                                   ],
                                                   crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                      CrossAxisAlignment.start,
                                                 ),
                                               ),
                                             )
                                           ],
-                                        );
-                                      } else {
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      }
-                                    }),
+                                        )
+                                      : StreamBuilder<QuerySnapshot>(
+                                          stream: FirebaseFirestore.instance
+                                              .collection("users")
+                                              .where('id',
+                                                  isEqualTo: msg[index]
+                                                      ["getSender"])
+                                              .snapshots(),
+                                          builder:
+                                              (BuildContext context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              return Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                      radius: 33,
+                                                      backgroundImage: NetworkImage(
+                                                          "${snapshot.data!.docs[0].get('avatar')}")),
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            "${snapshot.data!.docs[0].get('name')}",
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16,
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: Text(
+                                                                  msg[index]["getType"] ==
+                                                                          "text"
+                                                                      ? "${msg[index]["getText"]}"
+                                                                      : "you have received  a photo",
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  maxLines: 1,
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                child: Text(
+                                                                    "${msg[index]["getTime"]}"),
+                                                              )
+                                                            ],
+                                                          )
+                                                        ],
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              );
+                                            } else {
+                                              return Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            }
+                                          }),
+                                ),
                               ),
                             ),
                           );
                         },
                         padding: EdgeInsets.all(3),
                       );
-                    }else{
+                    } else {
                       return Column(
                         children: [
                           Lottie.asset("assets/empty.json"),

@@ -105,15 +105,13 @@ class _SignInScreenState extends State<SignUpScreen> {
                             };
                             AuthServices().signUp(data).then((value) {
                               if (value) {
-                                AuthServices().insertUserInFireStore(User.fromJson(data)).then((value) {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  nameController.clear();
-                                  passwordController.clear();
-                                  emailController.clear();
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (contet) => MessagesScreen()));
+                                setState(() {
+                                  loading = false;
                                 });
+                                nameController.clear();
+                                passwordController.clear();
+                                emailController.clear();
+                                Navigator.of(context).push(MaterialPageRoute(builder: (contet) => MessagesScreen()));
                               } else {
                                 setState(() {
                                   loading = false;

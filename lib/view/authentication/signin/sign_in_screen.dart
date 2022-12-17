@@ -39,11 +39,11 @@ class _SignInScreenState extends State<SignInScreen> {
         () {
           exit(0);
         },
-        "Oui",
+        "yes",
         () {
           Navigator.pop(context);
         },
-        "Non");
+        "No");
     return true;
   }
 

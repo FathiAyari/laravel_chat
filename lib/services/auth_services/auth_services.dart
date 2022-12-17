@@ -14,9 +14,10 @@ class AuthServices {
     http.Response response = await CallApi().postData(data, 'signup');
     if (response.statusCode == 200 || response.statusCode == 202) {
       storage.write("auth", 1);
+
       User user = User.fromJson(jsonDecode(response.body));
       await AuthServices().insertUserInFireStore(User.fromJson(user.toJson()));
-      print(user.toJson());
+
       storage.write('user', {
         'name': user.name,
         'id': user.id,
@@ -35,7 +36,7 @@ class AuthServices {
     if (response.statusCode == 200) {
       User user = User.fromJson(jsonDecode(response.body));
       storage.write("auth", 1);
-      print(user.toJson());
+
       storage.write('user', {
         'name': user.name,
         'email': user.email,
